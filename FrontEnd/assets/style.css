@@ -64,14 +64,35 @@ body {
 }
 
 /****modale*******/
-/* aside {
+aside {
+	/* top:660px; */
+	left: 405px;
+	border-radius: 10px;
 	width: 630px;
 	max-width: calc(100vw-50px);
 	max-height: calc(100vh-70px);
 	height: 688px;
-	background-color:#FFFEF8 ;
+	border: 1px solid rgb(194, 194, 153);
+	text-align: center;
+	position: relative;
+	z-index: 1;
+}
+aside i {
+	position: absolute;
+	right: 20px;
 
-} */
+}
+aside button {
+	background-color: #1D6154;
+	color:#FFF;
+	border-radius: 20px;
+	width: 237px;
+	height: 36px;
+	font-weight: 700;
+	font-size: 14px;
+	font-family: Syne;
+	border:transparent
+}
 
 header {
 	display: flex;
@@ -188,7 +209,13 @@ li:hover {
 	gap: 10px;
 	margin-bottom: 30px;
 	color:  #1D6154;		
+	
+}
+#portfolio .filter span {
 	background-color: white;
+}
+#portfolio .filter span:nth-child(1) {
+	background-color:#1D6154;
 }
 
 
@@ -269,13 +296,10 @@ footer nav ul {
 	display: flex;
 	justify-content: flex-end;
 	margin: 2em;
-	background-color:white;
 }
 
-/********CSS page de connexion**********/
-main {
-height: 85vh;
-}
+/********CSS page login**********/
+
 
 #contact a {
 	color:#3D3D3D;
