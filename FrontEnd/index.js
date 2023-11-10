@@ -11,16 +11,21 @@ const elementCategories = async () => {
 elementCategories();
 
 //---------------------------------------------------------------//
+let arrayWorks = [];
+const recupWorks = async () => {
+  const reponseWork = await fetch("http://localhost:5678/api/works");
+
+  const works = await reponseWork.json();
+
+  arrayWorks = works;
+};
+console.log(arrayWorks);
 
 const elementWorks = async () => {
-  const recupWorks = await fetch("http://localhost:5678/api/works");
+  await recupWorks();
 
-  const works = await recupWorks.json();
-  let arrayWorks = [];
-  arrayWorks = works;
-
-  const gallery = document.querySelector(".gallery");
   let worksHtml = "";
+
   arrayWorks.map((work) => {
     worksHtml += `
   <figure>
@@ -29,8 +34,10 @@ const elementWorks = async () => {
   </figure>
   `;
   });
-  gallery.innerHTML = worksHtml
-  console.log(works);
+
+  const gallery = document.querySelector(".gallery");
+  gallery.innerHTML = worksHtml;
+  // console.log(worksHtml);
   console.log(gallery);
 };
 
