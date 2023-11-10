@@ -18,8 +18,8 @@ const recupWorks = async () => {
   const works = await reponseWork.json();
 
   arrayWorks = works;
+  console.log(arrayWorks);
 };
-console.log(arrayWorks);
 
 const elementWorks = async () => {
   await recupWorks();
@@ -35,10 +35,12 @@ const elementWorks = async () => {
   `;
   });
 
-  const gallery = document.querySelector(".gallery");
+  const gallery = document.querySelector("#portfolio .gallery");
   gallery.innerHTML = worksHtml;
   // console.log(worksHtml);
   console.log(gallery);
 };
 
 elementWorks();
+
+//-------------test injection dynamique-------//
