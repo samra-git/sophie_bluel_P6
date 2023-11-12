@@ -211,9 +211,11 @@ li:hover {
 	color:  #1D6154;		
 	
 }
-#portfolio .filter span {
+
+/* #portfolio .filter span {
 	background-color: white;
-}
+} */
+
 #portfolio .filter span:nth-child(1) {
 	background-color:#1D6154;
 }
