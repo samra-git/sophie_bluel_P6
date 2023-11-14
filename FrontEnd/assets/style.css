@@ -203,7 +203,7 @@ li:hover {
 	gap: 7px;
 }
 
-#portfolio .filter {
+#portfolio .filters {
 	display: flex;
 	justify-content: center;
 	gap: 10px;
@@ -212,16 +212,16 @@ li:hover {
 	
 }
 
-/* #portfolio .filter span {
+ #portfolio .filter span {
 	background-color: white;
-} */
+} 
 
-#portfolio .filter span:nth-child(1) {
+#portfolio .filters span:nth-child(1) {
 	background-color:#1D6154;
 }
 
 
-.filter span:nth-child(1) {
+.filters span:nth-child(1) {
 	background-color: #1D6154;
 	color: #FFF;
 }

@@ -1,30 +1,35 @@
-// import { elementWorks } from "./fonctions.js";
+//----------------VARIABLES----------------------//
+const galleryDom = document.querySelector("#portfolio .gallery");
+const filterListDom = document.querySelector(".filters")
+
+let arrayWorks = [];
+let arrayCategories = [];
 
 //---------RECUPERATION DES DONNEES------------------//
 const elementCategories = async () => {
   const recupCategories = await fetch("http://localhost:5678/api/categories");
   const categories = await recupCategories.json();
-  let arrayCategories = [];
+  
   arrayCategories = categories;
+  // console.log(categories);
 };
 elementCategories();
-let arrayWorks = [];
+
 
 const recupWorks = async () => {
   const reponseWork = await fetch("http://localhost:5678/api/works");
 
   const works = await reponseWork.json();
+  // console.log(works);
   arrayWorks = works;
 };
 
-//------création des données dynamiquement----------------//
+//------générations des données dynamiquement----------------//
 
-const elementWorks = async () => {
-  await recupWorks();
-
+//fonction galerie//
+const showWorks = (arrayOfWorks) => {
   let worksHtml = "";
-
-  arrayWorks.map((work) => {
+  arrayOfWorks.map((work) => {
     worksHtml += `
   <figure>
   <img src="${work.imageUrl}" alt="${work.title}">
@@ -32,40 +37,93 @@ const elementWorks = async () => {
   </figure>
   `;
   });
+  galleryDom.innerHTML = worksHtml;
 
-  const gallery = document.querySelector("#portfolio .gallery");
-  gallery.innerHTML = worksHtml;
-  console.log(arrayWorks);
+}
+await recupWorks()
 
-  // console.log(gallery);
-};
+showWorks(arrayWorks)
 
-elementWorks();
+const showCategories = (arrayOfCategories) => {
+  let categoriesHtml = "";
+  arrayOfCategories.map((cat) => {
+    categoriesHtml += `<span class="filter">${cat.name}</span>`
+  })
+categoriesHtml = "<span class='filter'>Tous</span>" + categoriesHtml
+  filterListDom.innerHTML = categoriesHtml
+
+
+}
+showCategories(arrayCategories)
+
+
+//fonction filtes// 
+const filterDom = document.querySelectorAll(".filter")
+filterDom.forEach((filtre, index) => {
+  filtre.addEventListener("click", () => {
+    const filtersWorks = arrayWorks.filter((cat) => {
+        return cat.categoryId == index
+      })
+      if (index == 0) {
+        showWorks(arrayWorks)
+      } else {
+        showWorks(filtersWorks)
+      }
+      
+      
+
+  })
+});  
+
+
+
+
+
+
+
+
+
 
 //-------------création des filtres-------//
 
-const filterTous = document.querySelector("#portfolio .filterTous");
-filterTous.addEventListener("click", () => {
-  elementWorks();
-});
+// const filterTous = document.querySelector("#portfolio .filter");
+// filterTous.addEventListener("click", () => {
+//   elementWorks();
+// });
 
-const filterObjet = document.querySelector("#portfolio .filterObject");
-filterObjet.addEventListener("click", () => {
-  const categorieFiltrée = arrayWorks.filter((cat) => {
-  return cat.category.name.includes("Objets")
-})
+// let displayAll = filterTous
+
+// console.log(displayAll);
 
 
-const listObjet = document.createElement("ul")
-for (let i =0; i<categorieFiltrée.length; i++) {
-  const elementListObjet = document.createElement("li")
+// const filterObjet = document.querySelector("#portfolio .filter");
+// filterObjet.addEventListener("click", () => {
+// //   elementWorks()
+// //  gallery.innerHTML=""
+//   const categorieFiltrée = arrayWorks.filter((cat) => {
+//   return cat.category.name.includes("Objets")
+// })
+// console.log(categorieFiltrée);
 
 
-listObjet.appendChild(elementListObjet)
 
-listObjet = categorieFiltrée
-}
-})
+// const listObjet = document.createElement("ul")
+
+// for (let i = 0; i<categorieFiltrée.length; i++) {
+//   const elementListObjet = document.createElement("li")
+//   listObjet.appendChild(elementListObjet)
+
+// }
+// filterObjet.appendChild(listObjet)
+
+// filterObjet.style.backgroundColor = " #1D6154"
+// filterObjet.style.color = " white"
+// filterTous.style.backgroundColor = "#FFFEF8"
+// filterTous.style.color = " #1D6154"
+
+
+
+// })
 
 
 
