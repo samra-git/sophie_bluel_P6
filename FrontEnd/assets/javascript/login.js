@@ -1,8 +1,4 @@
-const formInfo = document.querySelector(".user");
-
-formInfo.addEventListener("submit", (e) => {
-  e.preventDefault();
-
+const connect = () => {
   const formData = new FormData(formInfo);
 
   const dataUser = Object.fromEntries(formData);
@@ -28,9 +24,14 @@ formInfo.addEventListener("submit", (e) => {
         redirect();
       }
     });
+};
 
-  //----------redirection sur la page d'accueil-------//
 
-  const login = document.querySelector("nav li:nth-child(4)");
-  // console.log(login);
+const formInfo = document.querySelector("#contact form");
+// console.log(formInfo);
+formInfo.addEventListener("submit", (e) => {
+  e.preventDefault();
+  connect();
+
+  
 });

@@ -57,7 +57,7 @@ categoriesHtml = "<span class='filter'>Tous</span>" + categoriesHtml
 showCategories(arrayCategories)
 
 
-//fonction filtes// 
+//fonction filtrées// 
 const filterDom = document.querySelectorAll(".filter")
 filterDom.forEach((filtre, index) => {
   filtre.addEventListener("click", () => {
@@ -74,6 +74,15 @@ filterDom.forEach((filtre, index) => {
 
   })
 });  
+
+
+
+if (token.ok)  {
+
+  const login = document.querySelector("nav li:nth-child(4)");
+  console.log(login);
+    login.style.display = "block";
+  }
 
 
 
