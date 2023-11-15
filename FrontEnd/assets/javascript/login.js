@@ -1,3 +1,5 @@
+const formInfo = document.querySelector("#contact form");
+
 const connect = () => {
   const formData = new FormData(formInfo);
 
@@ -27,7 +29,6 @@ const connect = () => {
 };
 
 
-const formInfo = document.querySelector("#contact form");
 // console.log(formInfo);
 formInfo.addEventListener("submit", (e) => {
   e.preventDefault();
