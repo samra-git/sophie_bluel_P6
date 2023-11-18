@@ -3,6 +3,16 @@
 //----------------VARIABLES----------------------//
 const galleryDom = document.querySelector("#portfolio .gallery");
 const filterListDom = document.querySelector(".filters");
+const logout = document.querySelector("nav li:nth-child(4)");
+const login = document.querySelector("nav li:nth-child(3)");
+const modeEdition = document.querySelector(".blackspace");
+const modify = document.querySelector(".modifier");
+const filterHidden = document.querySelector(".filters");
+const modifyProject = document.querySelector(".modifier i");
+const modale = document.querySelector(".modale");
+const galleryModal = document.querySelector(".galleryModal");
+const close = document.querySelector("aside i");
+const modifyWork = document.querySelector(".modifyWork")
 
 let arrayWorks = [];
 let arrayCategories = [];
@@ -23,10 +33,8 @@ const recupWorks = async () => {
   const works = await reponseWork.json();
   // console.log(works);
   arrayWorks = works;
-console.log(arrayWorks);
-
+  console.log(arrayWorks);
 };
-
 
 //------générations des données dynamiquement----------------//
 
@@ -78,81 +86,54 @@ const dataToken = sessionStorage.getItem("isConnected", true);
 // console.log(dataToken);
 
 if (dataToken) {
-  const logout = document.querySelector("nav li:nth-child(4)");
   // console.log(login);
   logout.style.display = "block";
 
-  const login = document.querySelector("nav li:nth-child(3)");
   // console.log(login);
   login.style.display = "none";
 
-  const modeEdition = document.querySelector(".blackspace")
-// console.log(modeEdition);
-modeEdition.style.visibility = "visible"
+  
+  // console.log(modeEdition);
+  modeEdition.style.visibility = "visible";
 
-const modify = document.querySelector(".modifier")
-modify.style.visibility = "visible"
+  
+  modify.style.visibility = "visible";
 
+  
+  filterHidden.style.display = "none";
 
-const filterHidden = document.querySelector(".filters")
-filterHidden.style.display = "none"
+ 
+  modifyProject.addEventListener("click", () => {
+    
+    modale.style.display = "block";
 
-const modifyProject = document.querySelector(".modifier i")
-modifyProject.addEventListener("click", () => {
+   
 
-const modale = document.querySelector(".modale")
-modale.style.display = "block"
-
-const galleryModal = document.querySelector(".galleryModal")
-// console.log(galleryModal);
-
-const modalWorks = (arrayOfWorks) => {
-  let worksHtml = "";
-  arrayOfWorks.map((work) => {
-    worksHtml += `
+    const modalWorks = (arrayOfWorks) => {
+      let worksHtml = "";
+      arrayOfWorks.map((work) => {
+        worksHtml += `
   <div  class="trash">
   <figure>
   <img src="${work.imageUrl}" alt="${work.title}"><i class="fa-solid fa-trash-can"></i>
   </figure>
   </div>
   `;
+      });
+      galleryModal.innerHTML = worksHtml;
+      galleryModal.classList.add("galleryModal");
+    };
+    modalWorks(arrayWorks);
+
+    close.addEventListener("click", () => {
+      modale.style.display = "none";
+    });
+    addPicture.addEventListener("click", () => {
+      modale.style.display = "none"
+      modifyWork.style.display = "block"
+    });
   });
-  galleryModal.innerHTML = worksHtml;
-  galleryModal.classList.add("galleryModal")
-};
-modalWorks(arrayWorks)
-
-const trash = document.querySelector("aside i")
-trash.addEventListener("click", () => {
-modale.style.display = "none"
-
-
-})
-
-
-
-})
-
-
-
-
-
-
-
-
-  
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
