@@ -53,36 +53,83 @@ body {
 	font-family: 'Work Sans' ;
 	font-size: 14px;
 	background-color: #FFFEF8;
-	/* position:fixed;
-	top:0;
-	left: 0;
+	/*****ajout css*****/
+	
+}
+/* .shadow {
+    position: absolute;
 	width: 100%;
 	height: 100%;
-	background: rgba(0, 0, 0, 0.2);
-	display: flex; */
-
-}
+	background:#333333d3; 
+	z-index: -1;
+} */
 
 /****modale*******/
-aside {
-	/* top:660px; */
-	left: 405px;
+.galleryModal img{
+	width: 76px;
+	height: 102px;
+	
+}
+.galleryModal {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+	padding: 100px;
+	gap:15px;
+}
+.modale h3 {
+	font-size: 26px;
+	font-weight: 400;
+	padding-top: 50px;
+	font-family: "Work Wans";
+}
+.trash figure{
+	position: relative;
+}
+.trash i{
+	position: absolute;
+	top:5px;
+	right:5px;
+	background-color: #000000;
+	color: white;
+	padding:5px;
+	border-radius: 3px;
+	cursor: pointer;
+
+}
+.border-bottom {
+	border: 1px solid #b3b3b3;
+	width: 400px;
+	position: absolute;
+	top: 560px;
+	left: 110px;	
+}
+
+.modale {
+	top:50%;
+	left: 50%;
+	position: absolute;
 	border-radius: 10px;
 	width: 630px;
-	max-width: calc(100vw-50px);
-	max-height: calc(100vh-70px);
+	transform: translate(-50%, -50%);
 	height: 688px;
 	border: 1px solid rgb(194, 194, 153);
 	text-align: center;
-	position: relative;
-	z-index: 1;
+	display: none;
+	background-color:#FFF;
 }
-aside i {
+
+
+.modale.active {
+	display: block;
+}
+.modale .close {
 	position: absolute;
 	right: 20px;
+	top:20px;
+	cursor: pointer;
 
 }
-aside button {
+.modale button {
 	background-color: #1D6154;
 	color:#FFF;
 	border-radius: 20px;
@@ -91,9 +138,71 @@ aside button {
 	font-weight: 700;
 	font-size: 14px;
 	font-family: Syne;
-	border:transparent
+	border:transparent;
+}  
+
+.modifyWork {
+	top:50%;
+	left: 50%;
+	position: absolute;
+	border-radius: 10px;
+	width: 630px;
+	transform: translate(-50%, -50%);
+	height: 688px;
+	border: 1px solid rgb(194, 194, 153);
+	text-align: center;
+	display: none;
+	background-color:#FFF;
+}
+.modifyWork.active {
+	display: block;
+}
+.modifyWork form{
+	margin-top: 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap:5px
+	
+}
+.modifyWork label{
+	text-align: left;
+}
+.modifyWork input, select{
+	width: 420px;
+	height: 51px;
+	border: none;
+	box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.09);
+}
+/* .modifyWork select {
+	width: 420px;
+	height: 51px;
+} */
+.ajouterPhoto {
+	width: 420px;
+	height: 169px;
+	background-color: #E8F1F6;
+	margin: 126px 105px 0 105px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap:5px;
+	border-radius: 3px;
+}
+.ajouterPhoto i {
+	color: #B9C5CC;
 }
 
+#add {
+	border-radius: 50px;
+	border: none;
+	background-color: #B9C5CC;
+	color: #306685;
+	width: 173px;
+	height: 36px;
+}
 header {
 	display: flex;
 	justify-content: space-between;
@@ -105,13 +214,16 @@ header {
 	width: 100%;
 	background-color: #000000;
 	color:#FFF;
-	display: flex;
-	justify-content: center;
+	display: flex; 
+	justify-content: center; 
 	align-items: center;
 	gap:7px;
+	visibility: hidden;
+	
+	
 	
 }
-.blackspace img {
+.blackspace i {
 	cursor: pointer;
 }
 
@@ -201,6 +313,10 @@ li:hover {
 .modifier {
 	display: flex;
 	gap: 7px;
+	visibility: hidden;
+}
+.modifier i {
+	cursor: pointer;
 }
 
 #portfolio .filters {

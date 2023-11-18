@@ -15,15 +15,13 @@ const connect = () => {
     .then((data) => {
       sessionStorage.setItem("Token", data.token);
 
-      const redirect = () => {
-        document.location.href = "./index.html";
-      };
+     
 
       if (data.message || data.error) {
-        alert("Vérifier vos données de connexion");
+        alert("Erreur dans l’identifiant ou le mot de passe");
       } else {
         sessionStorage.setItem("isConnected", JSON.stringify(true));
-        redirect();
+        document.location.href = "./index.html";
       }
     });
 };
