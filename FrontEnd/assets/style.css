@@ -82,10 +82,10 @@ body {
 	padding-top: 50px;
 	font-family: "Work Wans";
 }
-.trash figure{
+#minPicture figure{
 	position: relative;
 }
-.trash i{
+#minPicture i{
 	position: absolute;
 	top:5px;
 	right:5px;

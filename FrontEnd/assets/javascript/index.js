@@ -13,7 +13,7 @@ const modale = document.querySelector(".modale");
 const galleryModal = document.querySelector(".galleryModal");
 const close = document.querySelectorAll(".close");
 const modifyWork = document.querySelector(".modifyWork");
-const arrowReturn = document.querySelector(".arrowReturn")
+const arrowReturn = document.querySelector(".arrowReturn");
 
 let arrayWorks = [];
 let arrayCategories = [];
@@ -34,7 +34,7 @@ const recupWorks = async () => {
   const works = await reponseWork.json();
   // console.log(works);
   arrayWorks = works;
-  console.log(arrayWorks);
+  // console.log(arrayWorks);
 };
 
 //------générations des données dynamiquement----------------//
@@ -55,6 +55,7 @@ const showWorks = (arrayOfWorks) => {
 await recupWorks();
 
 showWorks(arrayWorks);
+console.log(arrayWorks);
 
 const showCategories = (arrayOfCategories) => {
   let categoriesHtml = "";
@@ -107,26 +108,26 @@ if (dataToken) {
       let worksHtml = "";
       arrayOfWorks.map((work) => {
         worksHtml += `
-  <div  class="trash">
+  <div  id="minPicture">
   <figure>
-  <img src="${work.imageUrl}" alt="${work.title}"><i class="fa-solid fa-trash-can"></i>
+  <img src="${work.imageUrl}" alt="${work.title}"><i class="fa-solid fa-trash-can #trash"></i>
   </figure>
   </div>
   `;
       });
       galleryModal.innerHTML = worksHtml;
       galleryModal.classList.add("galleryModal");
+
+      // console.log(galleryModal);
     };
     modalWorks(arrayWorks);
 
     close.forEach((element) => {
       element.addEventListener("click", () => {
-      modale.style.display = "none";
-      modifyWork.style.display = "none";
-      
-      })
+        modale.style.display = "none";
+        modifyWork.style.display = "none";
+      });
     });
-    
 
     btnAdd.addEventListener("click", () => {
       modale.style.display = "none";
@@ -136,21 +137,38 @@ if (dataToken) {
     arrowReturn.addEventListener("click", () => {
       modale.style.display = "block";
       modifyWork.style.display = "none";
-      
-    })
-
-
-
+    });
+    const trash = document.querySelectorAll("#minPicture i");
+    trash.forEach((e) => {
+      e.addEventListener("click", deleteProject());
+    });
   });
-
-
-
-
-
-
 }
 
+//------fonction pour supprimer un projet----//
 
+
+const deleteProject = () => {
+  fetch("http://localhost:5678/api/works/" +"id", {
+      method: "DELETE",
+      headers: {
+        "Authorization": "Bearer" + sessionStorage.getItem("token")
+      },
+    }).then((res) => console.log(res));
+  
+};// erreur 401
+
+
+//----déconnexion----//
+
+
+const deconnect = () => {
+  sessionStorage.clear();
+  document.location.href = "./index.html";
+}
+logout.addEventListener("click", () => {
+  deconnect()
+})
 
 
 
