@@ -11,8 +11,9 @@ const filterHidden = document.querySelector(".filters");
 const modifyProject = document.querySelector(".modifier i");
 const modale = document.querySelector(".modale");
 const galleryModal = document.querySelector(".galleryModal");
-const close = document.querySelector("aside i");
-const modifyWork = document.querySelector(".modifyWork")
+const close = document.querySelectorAll(".close");
+const modifyWork = document.querySelector(".modifyWork");
+const arrowReturn = document.querySelector(".arrowReturn")
 
 let arrayWorks = [];
 let arrayCategories = [];
@@ -92,22 +93,15 @@ if (dataToken) {
   // console.log(login);
   login.style.display = "none";
 
-  
   // console.log(modeEdition);
   modeEdition.style.visibility = "visible";
 
-  
   modify.style.visibility = "visible";
 
-  
   filterHidden.style.display = "none";
 
- 
   modifyProject.addEventListener("click", () => {
-    
     modale.style.display = "block";
-
-   
 
     const modalWorks = (arrayOfWorks) => {
       let worksHtml = "";
@@ -125,18 +119,36 @@ if (dataToken) {
     };
     modalWorks(arrayWorks);
 
-    close.addEventListener("click", () => {
+    close.forEach((element) => {
+      element.addEventListener("click", () => {
       modale.style.display = "none";
+      modifyWork.style.display = "none";
+      
+      })
     });
-    addPicture.addEventListener("click", () => {
-      modale.style.display = "none"
-      modifyWork.style.display = "block"
+    
+
+    btnAdd.addEventListener("click", () => {
+      modale.style.display = "none";
+      modifyWork.style.display = "block";
     });
+
+    arrowReturn.addEventListener("click", () => {
+      modale.style.display = "block";
+      modifyWork.style.display = "none";
+      
+    })
+
+
+
   });
+
+
+
+
+
+
 }
-
-
-
 
 
 

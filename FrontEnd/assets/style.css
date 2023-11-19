@@ -76,7 +76,7 @@ body {
 	padding: 100px;
 	gap:15px;
 }
-.modale h3 {
+.modale h3, .modifyWork h3 {
 	font-size: 26px;
 	font-weight: 400;
 	padding-top: 50px;
@@ -122,14 +122,14 @@ body {
 .modale.active {
 	display: block;
 }
-.modale .close {
+.close {
 	position: absolute;
 	right: 20px;
 	top:20px;
 	cursor: pointer;
 
 }
-.modale button {
+.modale button, .modifyWork button {
 	background-color: #1D6154;
 	color:#FFF;
 	border-radius: 20px;
@@ -139,7 +139,13 @@ body {
 	font-size: 14px;
 	font-family: Syne;
 	border:transparent;
-}  
+	cursor: pointer;
+} 
+
+#btnSubmit {
+	background-color:#A7A7A7 ;
+	margin-top: 80px;
+} 
 
 .modifyWork {
 	top:50%;
@@ -175,15 +181,17 @@ body {
 	border: none;
 	box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.09);
 }
-/* .modifyWork select {
-	width: 420px;
-	height: 51px;
-} */
+.arrowReturn {
+	position: absolute;
+	top:20px;
+	left:20px;
+	cursor: pointer;
+}
 .ajouterPhoto {
 	width: 420px;
 	height: 169px;
 	background-color: #E8F1F6;
-	margin: 126px 105px 0 105px;
+	margin: 100px 105px 0 105px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -195,7 +203,7 @@ body {
 	color: #B9C5CC;
 }
 
-#add {
+#btnAddPicture {
 	border-radius: 50px;
 	border: none;
 	background-color: #B9C5CC;
