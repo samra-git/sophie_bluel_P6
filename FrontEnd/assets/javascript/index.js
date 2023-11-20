@@ -34,6 +34,7 @@ const recupWorks = async () => {
   const works = await reponseWork.json();
   // console.log(works);
   arrayWorks = works;
+  
   // console.log(arrayWorks);
 };
 
@@ -101,16 +102,43 @@ if (dataToken) {
 
   filterHidden.style.display = "none";
 
+  const deleteProject = (id) => {
+    const token = sessionStorage.getItem("Token")
+    // console.log(token);
+    // const authorization = "bearer " + token
+    // const tableau = authorization.split(' ')
+    // console.log(tableau[1]);
+    fetch("http://localhost:5678/api/works/" + id, {
+        method: "DELETE",
+        headers: {
+          "Authorization": "Bearer " + token
+        },
+      }).then((res) => {
+        if (res.status == 204) {
+          alert('produit supprimé')
+          recupWorks().then(() => {
+            console.log(arrayWorks);
+          })
+        }
+      });
+    
+  }
+  
+
+
   modifyProject.addEventListener("click", () => {
     modale.style.display = "block";
 
+
+
+    
     const modalWorks = (arrayOfWorks) => {
       let worksHtml = "";
       arrayOfWorks.map((work) => {
         worksHtml += `
   <div  id="minPicture">
   <figure>
-  <img src="${work.imageUrl}" alt="${work.title}"><i class="fa-solid fa-trash-can #trash"></i>
+  <img src="${work.imageUrl}" alt="${work.title}"><span onclick="deleteProject(${work.id})"><i class="fa-solid fa-trash-can #trash"></i></span>
   </figure>
   </div>
   `;
@@ -138,25 +166,17 @@ if (dataToken) {
       modale.style.display = "block";
       modifyWork.style.display = "none";
     });
-    const trash = document.querySelectorAll("#minPicture i");
-    trash.forEach((e) => {
-      e.addEventListener("click", deleteProject());
-    });
+    // const trash = document.querySelectorAll("#minPicture i");
+    // trash.forEach((e) => {
+    //   e.addEventListener("click", deleteProject);
+    // });
   });
 }
 
 //------fonction pour supprimer un projet----//
 
 
-const deleteProject = () => {
-  fetch("http://localhost:5678/api/works/" +"id", {
-      method: "DELETE",
-      headers: {
-        "Authorization": "Bearer" + sessionStorage.getItem("token")
-      },
-    }).then((res) => console.log(res));
-  
-};// erreur 401
+;// erreur 401
 
 
 //----déconnexion----//
