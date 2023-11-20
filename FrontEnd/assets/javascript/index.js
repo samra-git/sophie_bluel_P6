@@ -102,6 +102,7 @@ if (dataToken) {
 
   filterHidden.style.display = "none";
 
+  
   const deleteProject = (id) => {
     const token = sessionStorage.getItem("Token")
     // console.log(token);
@@ -123,7 +124,6 @@ if (dataToken) {
       });
     
   }
-  
 
 
   modifyProject.addEventListener("click", () => {
