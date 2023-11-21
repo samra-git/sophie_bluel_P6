@@ -34,13 +34,12 @@ const recupWorks = async () => {
   const works = await reponseWork.json();
   // console.log(works);
   arrayWorks = works;
-  
   // console.log(arrayWorks);
 };
 
 //------générations des données dynamiquement----------------//
 
-//fonction galerie//
+//******fonction qui affiche la galerie de la page d'accueil******//
 const showWorks = (arrayOfWorks) => {
   let worksHtml = "";
   arrayOfWorks.map((work) => {
@@ -84,9 +83,9 @@ filterDom.forEach((filtre, index) => {
 });
 
 // --------modification de la page après connexion----------------//
-//--récupérer les données dans localStorage
+//--récupérer les données dans SessionStorage
 const dataToken = sessionStorage.getItem("isConnected", true);
-// console.log(dataToken);
+console.log(dataToken);
 
 if (dataToken) {
   // console.log(login);
@@ -102,143 +101,105 @@ if (dataToken) {
 
   filterHidden.style.display = "none";
 
-  
-  const deleteProject = (id) => {
-    const token = sessionStorage.getItem("Token")
-    // console.log(token);
-    // const authorization = "bearer " + token
-    // const tableau = authorization.split(' ')
-    // console.log(tableau[1]);
-    fetch("http://localhost:5678/api/works/" + id, {
-        method: "DELETE",
-        headers: {
-          "Authorization": "Bearer " + token
-        },
-      }).then((res) => {
-        if (res.status == 204) {
-          alert('produit supprimé')
-          recupWorks().then(() => {
-            console.log(arrayWorks);
-          })
-        }
-      });
-    
-  }
-
-
   modifyProject.addEventListener("click", () => {
     modale.style.display = "block";
 
+  
+//----fonction pour générer la gallerie dans la modale------//
 
-
-    
-    const modalWorks = (arrayOfWorks) => {
-      let worksHtml = "";
-      arrayOfWorks.map((work) => {
-        worksHtml += `
-  <div  id="minPicture">
-  <figure>
-  <img src="${work.imageUrl}" alt="${work.title}"><span onclick="deleteProject(${work.id})"><i class="fa-solid fa-trash-can #trash"></i></span>
-  </figure>
-  </div>
-  `;
-      });
-      galleryModal.innerHTML = worksHtml;
-      galleryModal.classList.add("galleryModal");
-
-      // console.log(galleryModal);
-    };
-    modalWorks(arrayWorks);
-
-    close.forEach((element) => {
-      element.addEventListener("click", () => {
-        modale.style.display = "none";
-        modifyWork.style.display = "none";
-      });
+  const modalWorks = (arrayOfWorks) => {
+    let worksHtml = "";
+    arrayOfWorks.map((work) => {
+      worksHtml += `
+    <div data-work-id="${work.id}"  id="minPicture">
+    <figure>
+    <img src="${work.imageUrl}" alt="${work.title}"><i class="fa-solid fa-trash-can #trash"></i>
+    </figure>
+    </div>
+    `;
     });
+    galleryModal.innerHTML = worksHtml;
+    galleryModal.classList.add("galleryModal");
 
-    btnAdd.addEventListener("click", () => {
+    // console.log(galleryModal);
+  };
+  modalWorks(arrayWorks);
+
+  close.forEach((element) => {
+    element.addEventListener("click", () => {
       modale.style.display = "none";
-      modifyWork.style.display = "block";
-    });
-
-    arrowReturn.addEventListener("click", () => {
-      modale.style.display = "block";
       modifyWork.style.display = "none";
     });
-    // const trash = document.querySelectorAll("#minPicture i");
-    // trash.forEach((e) => {
-    //   e.addEventListener("click", deleteProject);
-    // });
   });
-}
+
+  btnAdd.addEventListener("click", () => {
+    modale.style.display = "none";
+    modifyWork.style.display = "block";
+  });
+
+  arrowReturn.addEventListener("click", () => {
+    modale.style.display = "block";
+    modifyWork.style.display = "none";
+  });
+  const trash = document.querySelectorAll("#minPicture i");
+  trash.forEach((e) => {
+    e.addEventListener("click", (e) => {
+      const workId = e.target.closest("#minPicture").dataset.workId
+      deleteProjectById(workId)
+    })
+  });
+
+
+
 
 //------fonction pour supprimer un projet----//
 
 
-;// erreur 401
+  const deleteProjectById = (workId) => {
+    const token = sessionStorage.getItem("Token");
+    const userConfirmed = confirm("Etes-vous sûr de vouloir supprimer?")
+  console.log(userConfirmed);
+
+    if (userConfirmed) {
+    fetch("http://localhost:5678/api/works/" + workId, {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }).then((res) => {
+      if (!res.ok) {
+        console.error("Erreur lors de la suppression du projet")
+      } else {
+        recupWorks()
+        const workToDelete = document.querySelector("#minPicture");
+
+        if (workToDelete) {
+          workToDelete.remove()
+        }
+      }
+    })
+    .catch((error) => {console.error("Erreur:", error)
+  })
+  };
+}
 
 
-//----déconnexion----//
+    
+})
+}
 
+//-------fonction pour ajouter un projet----//
+
+
+
+
+
+//-------déconnexion---------//
 
 const deconnect = () => {
   sessionStorage.clear();
   document.location.href = "./index.html";
-}
+};
 logout.addEventListener("click", () => {
-  deconnect()
-})
-
-
-
-
-
-//-------------création des filtres-------//
-
-// const filterTous = document.querySelector("#portfolio .filter");
-// filterTous.addEventListener("click", () => {
-//   elementWorks();
-// });
-
-// let displayAll = filterTous
-
-// console.log(displayAll);
-
-// const filterObjet = document.querySelector("#portfolio .filter");
-// filterObjet.addEventListener("click", () => {
-// //   elementWorks()
-// //  gallery.innerHTML=""
-//   const categorieFiltrée = arrayWorks.filter((cat) => {
-//   return cat.category.name.includes("Objets")
-// })
-// console.log(categorieFiltrée);
-
-// const listObjet = document.createElement("ul")
-
-// for (let i = 0; i<categorieFiltrée.length; i++) {
-//   const elementListObjet = document.createElement("li")
-//   listObjet.appendChild(elementListObjet)
-
-// }
-// filterObjet.appendChild(listObjet)
-
-// filterObjet.style.backgroundColor = " #1D6154"
-// filterObjet.style.color = " white"
-// filterTous.style.backgroundColor = "#FFFEF8"
-// filterTous.style.color = " #1D6154"
-
-// })
-
-// console.log("cliqué")
-
-// const filterAppart = document.querySelector("#portfolio .filterAppart")
-
-// filterAppart.addEventListener("click", () => {
-//   console.log("cliqué");
-// })
-// const filterHotel = document.querySelector("#portfolio .filterHotel")
-
-// filterHotel.addEventListener("click", () => {
-//   console.log("cliqué");
-// })
+  deconnect();
+});

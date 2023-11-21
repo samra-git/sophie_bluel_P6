@@ -15,7 +15,6 @@ const connect = () => {
     .then((data) => {
       sessionStorage.setItem("Token", data.token);
 
-     
 
       if (data.message || data.error) {
         alert("Erreur dans l’identifiant ou le mot de passe");
