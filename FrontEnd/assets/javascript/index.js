@@ -179,30 +179,40 @@ if (dataToken) {
 //-------fonction pour ajouter un projet----//
 const btnAddPicture = document.getElementById("btnAddPicture");
 const form = document.querySelector("#dataForm");
-const titre = document.getElementById("titre");
+const titre = document.getElementById("titre").value;
 const filePicture = document.getElementById("filePicture");
 const previewPicture = document.querySelector("#previewPicture");
 
 
 //***écouteur d'événement à l'ajout de la photo */
 
-const formSubmit = () => {
+const formSubmit = (e) => {
+  e.preventDefault()
   const formData = new FormData(form);
-  const file = formData.get('file', 'titre', 'categorie');
+  const file = formData.get("file");
+  const title = formData.get("titre")
+  const categoryId = formData.get("categorie")
+  
+  const project = {file, title, categoryId}
+  console.log(project);
+  
+  if (file, title, categoryId) {
+    btnSubmit.style.background = "#1D6154"
+  }
+  
+  
   console.log(file);
+  console.log(title);
+  console.log(categoryId);
 
   if (file) {
     previewPicture.src = URL.createObjectURL(file);
-    // form.style.visibility = "hidden";
-    if (previewPicture) {
-      previewPicture.style.visibility = "visible"
-      btnAddPicture.style.visibility = "hidden"
-      document.querySelector(".ajouterPhoto p").style.visibility = "hidden"
+      if (previewPicture) {
+        previewPicture.style.visibility = "visible"
+        btnAddPicture.style.visibility = "hidden"
+        document.querySelector(".ajouterPhoto p").style.visibility = "hidden"
     }
     }
-
-    
-
 
   btnAddPicture.addEventListener("click", (e) => {
     e.preventDefault();
@@ -211,34 +221,32 @@ const formSubmit = () => {
     }
   });
   
-    //   const file = filePicture.files[0]
-    //   console.log(file);
     
-    //   if (file !== undefined) {
-    
-    //     // file.classList.add("previewPicture")
-    //     //--créer une balise qui permet d'afficher la prévisualisation de la photo
-    //     //-- styliser la class previewPicture
-    
-    // }
-    
-    // })
-  // console.log(file);
-  // previewPicture.src = URL.createObjectURL(event.target.files[0]);
-
-
-  
-  // if (previewPicture) {
-  //   form.style.visibility = "hidden";
-  // }
 };
-// 
 
 
+dataForm.addEventListener("change",formSubmit
+  // modifyWork.style.display = "none"
+  // modale.style.display = "block"
+)
 
-filePicture.addEventListener("change", formSubmit)
 
+const sendProject = () => {
+  const token = sessionStorage.getItem("Token");
 
+  const dataToken = sessionStorage.getItem("isConnected", true)
+  if (dataToken) {
+  fetch("http://localhost:5678/api/works/", {
+  method: "POST",
+  headers: {
+    Authorization: "Bearer " + token,
+  },
+  body: "project",
+
+ } )
+}
+}
+if (dataToken){sendProject()}
 
 
 
