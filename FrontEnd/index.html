@@ -55,24 +55,33 @@
 			<i class="fa-solid fa-arrow-left arrowReturn"></i>
 			<i class="fa-solid fa-xmark close"></i>
 
-			<div class="ajouterPhoto">
-				<i class="fa-regular fa-image fa-5x"></i>
-				<button id="btnAddPicture">+ Ajouter photo</button>
-				<p>jpg, png : 4mo max</p>
+			<form id="dataForm" enctype="multipart/form-data" method="post" name="fileform">
 
-			</div>
-			<form action="">
+				<div class="ajouterPhoto">
+					<i class="fa-regular fa-image fa-5x"></i>
+					<label id="btnAddPicture">+ Ajouter photo
+						<input type="file" name="file" id="filePicture" multiple accept="images/*" required />
+					</label>
+					<p>jpg, png : 4mo max</p>
+				</div>
+
+
 				<label for="titre">Titre</label>
-				<input type="text" id="titre">
+				<input type="text" id="titre" name="titre" required>
 				<label for="categorieStyle">Catégorie</label>
-				<select name="categorie" id="categorieStyle">
+				<select name="categorie" id="categorieStyle" name="categorieStyle" required>
 					<option value=""></option>
+					<option value="1">Objets</option>
+					<option value="2">Appartements</option>
+					<option value="3">Hôtels & Restaurants</option>
 				</select>
+				<img id="previewPicture"></img>
 			</form>
 			<div class="border-bottom"></div>
 
 
-			<button id="btnSubmit">Valider</button>
+
+			<input type="submit" value="Valider" id="btnSubmit">
 
 
 
@@ -102,12 +111,8 @@
 				</div>
 			</div>
 			<div class="filters">
-				<!-- <span class=" filterTous">Tous</span>
-				<span class=" filterObject">Objets</span>
-				<span class=" filterAppart">Appartements</span>
-				<span class=" filterHotel">Hôtel & Restaurants</span> -->
+				
 			</div>
-			<!-- <div class="gallery"></div> -->
 
 			<div class="gallery">
 

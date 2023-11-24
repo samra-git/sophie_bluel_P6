@@ -210,12 +210,28 @@ body {
 	color: #306685;
 	width: 173px;
 	height: 36px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 header {
 	display: flex;
 	justify-content: space-between;
 	margin: 50px 0
 }
+#filePicture {
+	display: none;
+}
+
+#previewPicture {
+	position: absolute;
+	top:195px;
+	width: 129px;
+	height: 169px;
+	object-fit: cover;
+	visibility: hidden;
+	
+} 
 /***ajout***/
 .blackspace {
 	height: 59px;

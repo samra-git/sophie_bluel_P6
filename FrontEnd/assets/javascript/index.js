@@ -55,7 +55,7 @@ const showWorks = (arrayOfWorks) => {
 await recupWorks();
 
 showWorks(arrayWorks);
-console.log(arrayWorks);
+// console.log(arrayWorks);
 
 const showCategories = (arrayOfCategories) => {
   let categoriesHtml = "";
@@ -90,105 +90,154 @@ console.log(dataToken);
 if (dataToken) {
   // console.log(login);
   logout.style.display = "block";
-
-  // console.log(login);
   login.style.display = "none";
-
-  // console.log(modeEdition);
   modeEdition.style.visibility = "visible";
-
   modify.style.visibility = "visible";
-
   filterHidden.style.display = "none";
 
   modifyProject.addEventListener("click", () => {
     modale.style.display = "block";
 
-  
-//----fonction pour générer la gallerie dans la modale------//
+    //----fonction pour générer la gallerie dans la modale------//
 
-  const modalWorks = (arrayOfWorks) => {
-    let worksHtml = "";
-    arrayOfWorks.map((work) => {
-      worksHtml += `
+    const modalWorks = (arrayOfWorks) => {
+      let worksHtml = "";
+      arrayOfWorks.map((work) => {
+        worksHtml += `
     <div data-work-id="${work.id}"  id="minPicture">
     <figure>
     <img src="${work.imageUrl}" alt="${work.title}"><i class="fa-solid fa-trash-can #trash"></i>
     </figure>
     </div>
     `;
+      });
+      galleryModal.innerHTML = worksHtml;
+      galleryModal.classList.add("galleryModal");
+
+      // console.log(galleryModal);
+    };
+    modalWorks(arrayWorks);
+
+    close.forEach((element) => {
+      element.addEventListener("click", () => {
+        modale.style.display = "none";
+        modifyWork.style.display = "none";
+      });
     });
-    galleryModal.innerHTML = worksHtml;
-    galleryModal.classList.add("galleryModal");
 
-    // console.log(galleryModal);
-  };
-  modalWorks(arrayWorks);
-
-  close.forEach((element) => {
-    element.addEventListener("click", () => {
+    btnAdd.addEventListener("click", () => {
       modale.style.display = "none";
+      modifyWork.style.display = "block";
+    });
+
+    arrowReturn.addEventListener("click", () => {
+      modale.style.display = "block";
       modifyWork.style.display = "none";
     });
-  });
+    const trash = document.querySelectorAll("#minPicture i");
+    trash.forEach((e) => {
+      e.addEventListener("click", (e) => {
+        const workId = e.target.closest("#minPicture").dataset.workId;
+        deleteProjectById(workId);
+      });
+    });
 
-  btnAdd.addEventListener("click", () => {
-    modale.style.display = "none";
-    modifyWork.style.display = "block";
-  });
+    //------fonction pour supprimer un projet----//
 
-  arrowReturn.addEventListener("click", () => {
-    modale.style.display = "block";
-    modifyWork.style.display = "none";
-  });
-  const trash = document.querySelectorAll("#minPicture i");
-  trash.forEach((e) => {
-    e.addEventListener("click", (e) => {
-      const workId = e.target.closest("#minPicture").dataset.workId
-      deleteProjectById(workId)
-    })
-  });
+    const deleteProjectById = (workId) => {
+      const token = sessionStorage.getItem("Token");
+      const userConfirmed = confirm("Etes-vous sûr de vouloir supprimer?");
+      console.log(userConfirmed);
 
+      if (userConfirmed) {
+        fetch("http://localhost:5678/api/works/" + workId, {
+          method: "DELETE",
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        })
+          .then((res) => {
+            if (!res.ok) {
+              console.error("Erreur lors de la suppression du projet");
+            } else {
+              recupWorks();
+              const workToDelete = document.querySelector("#minPicture");
 
-
-
-//------fonction pour supprimer un projet----//
-
-
-  const deleteProjectById = (workId) => {
-    const token = sessionStorage.getItem("Token");
-    const userConfirmed = confirm("Etes-vous sûr de vouloir supprimer?")
-  console.log(userConfirmed);
-
-    if (userConfirmed) {
-    fetch("http://localhost:5678/api/works/" + workId, {
-      method: "DELETE",
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    }).then((res) => {
-      if (!res.ok) {
-        console.error("Erreur lors de la suppression du projet")
-      } else {
-        recupWorks()
-        const workToDelete = document.querySelector("#minPicture");
-
-        if (workToDelete) {
-          workToDelete.remove()
-        }
+              if (workToDelete) {
+                workToDelete.remove();
+              }
+            }
+          })
+          .catch((error) => {
+            console.error("Erreur:", error);
+          });
       }
-    })
-    .catch((error) => {console.error("Erreur:", error)
-  })
-  };
-}
-
-
-    
-})
+    };
+  });
 }
 
 //-------fonction pour ajouter un projet----//
+const btnAddPicture = document.getElementById("btnAddPicture");
+const form = document.querySelector("#dataForm");
+const titre = document.getElementById("titre");
+const filePicture = document.getElementById("filePicture");
+const previewPicture = document.querySelector("#previewPicture");
+
+
+//***écouteur d'événement à l'ajout de la photo */
+
+const formSubmit = () => {
+  const formData = new FormData(form);
+  const file = formData.get('file', 'titre', 'categorie');
+  console.log(file);
+
+  if (file) {
+    previewPicture.src = URL.createObjectURL(file);
+    // form.style.visibility = "hidden";
+    if (previewPicture) {
+      previewPicture.style.visibility = "visible"
+      btnAddPicture.style.visibility = "hidden"
+      document.querySelector(".ajouterPhoto p").style.visibility = "hidden"
+    }
+    }
+
+    
+
+
+  btnAddPicture.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (filePicture) {
+      filePicture.click();
+    }
+  });
+  
+    //   const file = filePicture.files[0]
+    //   console.log(file);
+    
+    //   if (file !== undefined) {
+    
+    //     // file.classList.add("previewPicture")
+    //     //--créer une balise qui permet d'afficher la prévisualisation de la photo
+    //     //-- styliser la class previewPicture
+    
+    // }
+    
+    // })
+  // console.log(file);
+  // previewPicture.src = URL.createObjectURL(event.target.files[0]);
+
+
+  
+  // if (previewPicture) {
+  //   form.style.visibility = "hidden";
+  // }
+};
+// 
+
+
+
+filePicture.addEventListener("change", formSubmit)
+
 
 
 
@@ -203,3 +252,26 @@ const deconnect = () => {
 logout.addEventListener("click", () => {
   deconnect();
 });
+
+
+
+
+
+
+
+
+
+
+//------brouillon--------//
+//--écouteur d'événement permet de détecter les changements dans le formulaire lors chargement de type file
+// 
+
+// btnSubmit.addEventListener("submit", (e) => {
+//   e.preventDefault();
+
+//   console.log(titre.value);
+//   console.log(categorieStyle.value);
+
+// //   const formData = new FormData(form)
+// // console.log(formData);
+// })
