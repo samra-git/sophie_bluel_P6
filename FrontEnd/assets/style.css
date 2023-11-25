@@ -145,6 +145,7 @@ body {
 #btnSubmit {
 	background-color:#A7A7A7 ;
 	margin-top: 80px;
+	cursor: pointer;
 } 
 
 .modifyWork {

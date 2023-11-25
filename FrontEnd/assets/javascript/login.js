@@ -4,7 +4,7 @@ const connect = () => {
   const formData = new FormData(formInfo);
 
   const dataUser = Object.fromEntries(formData);
-  // console.log(dataUser);
+  console.log(dataUser);
 
   fetch("http://localhost:5678/api/users/login", {
     method: "POST",
