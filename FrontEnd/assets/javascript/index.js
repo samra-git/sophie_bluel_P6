@@ -170,6 +170,8 @@ if (dataToken) {
 
               if (workToDelete) {
                 workToDelete.remove();
+          
+                // modalWorks(arrayWorks)
               }
             }
           })
@@ -212,6 +214,7 @@ const formChange = (e) => {
 
   if (image) {
     previewPicture.src = URL.createObjectURL(image);
+    
     if (previewPicture) {
       previewPicture.style.visibility = "visible";
       btnAddPicture.style.visibility = "hidden";
@@ -227,35 +230,41 @@ const formChange = (e) => {
   });
 };
 
-dataForm.addEventListener(
-  "change",
-  formChange
-  // modifyWork.style.display = "none"
-  // modale.style.display = "block"
-);
+dataForm.addEventListener("change",  formChange);
 
 
 const sendProject = async () => {
 const formData = new FormData(form);
-const dataProject = Object.fromEntries(formData);
-console.log(dataProject);
+// const dataProject = Object.fromEntries(formData);
+// dataProject.category = parseInt(dataProject.category, 10);
+console.log(formData);
 
   const token = sessionStorage.getItem("Token");
   const dataToken = sessionStorage.getItem("isConnected", true);
-console.log(token);
-  const callForSend = await fetch("http://localhost:5678/api/works/", {
+// console.log(token);
+  const callForSend = await fetch("http://localhost:5678/api/works", {
     method: "POST",
     headers: {
       // accept: "application/json",
       Authorization: "Bearer " + token,
     },
-    body: dataProject,
-  });
-  if (callForSend.status === 201) {
-    console.log("ok");
+    body: formData,
+  }).then((res) =>  {
+     if (res.ok) {
+    form.reset()
+    previewPicture.src ="";
+
+  modifyWork.style.display = "none"
+   modale.style.display = "block"
+
+  // galleryModal.innerHTML = ""
+  //  modalWorks(arrayWorks);
+  //  galleryDom.innerHTML = ""
+  //  showWorks(arrayWorks)
   } else {
     console.error("not ok");
   }
+})
 };
 
 // sendProject();
@@ -288,7 +297,7 @@ logout.addEventListener("click", () => {
 
 
 
-//------brouillon--------//
+//--------------------------------------brouillon----------------------------------//
 //--écouteur d'événement permet de détecter les changements dans le formulaire lors chargement de type file
 //
 
