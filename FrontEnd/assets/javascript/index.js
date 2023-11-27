@@ -14,6 +14,7 @@ const galleryModal = document.querySelector(".galleryModal");
 const close = document.querySelectorAll(".close");
 const modifyWork = document.querySelector(".modifyWork");
 const arrowReturn = document.querySelector(".arrowReturn");
+const btnSubmit = document.getElementById("btnSubmit")
 
 let arrayWorks = [];
 let arrayCategories = [];
@@ -82,10 +83,13 @@ filterDom.forEach((filtre, index) => {
   });
 });
 
-// --------modification de la page après connexion----------------//
-//--récupérer les données dans SessionStorage
+
+//------------------------------------MODALE--------------------------//
+
 const dataToken = sessionStorage.getItem("isConnected", true);
 console.log(dataToken);
+
+// --modification de la page d'accueil après connexion--//
 
 if (dataToken) {
   // console.log(login);
@@ -125,11 +129,12 @@ if (dataToken) {
       });
     });
 
+//--bouton qui permet d'accéder à la modale pour ajouter un projet--//
     btnAdd.addEventListener("click", () => {
       modale.style.display = "none";
       modifyWork.style.display = "block";
     });
-
+//--flèche de retour à la modale supprimer projet--//
     arrowReturn.addEventListener("click", () => {
       modale.style.display = "block";
       modifyWork.style.display = "none";
@@ -176,12 +181,15 @@ if (dataToken) {
   });
 }
 
-//-------fonction pour ajouter un projet----//
+
+//----------fonction pour ajouter un projet-----------//
 const btnAddPicture = document.getElementById("btnAddPicture");
 const form = document.querySelector("#dataForm");
 const titre = document.getElementById("title").value;
 const filePicture = document.getElementById("filePicture");
 const previewPicture = document.querySelector("#previewPicture");
+// const formData = new FormData(form);
+// const dataProject = Object.fromEntries(formData);
 
 //***écouteur d'événement à l'ajout de la photo */
 
@@ -197,7 +205,6 @@ const formChange = (e) => {
   const project = { file, title, category };
 
   console.log(project);
-  console.log(dataProject);
 
   if ((file, title, category)) {
     btnSubmit.style.background = "#1D6154";
@@ -231,17 +238,19 @@ dataForm.addEventListener(
 const sendProject = async () => {
 const formData = new FormData(form);
 const dataProject = Object.fromEntries(formData);
+console.log("dataProject");
+console.log(dataProject);
 
   const token = sessionStorage.getItem("Token");
   const dataToken = sessionStorage.getItem("isConnected", true);
-
+console.log(token);
   const callForSend = await fetch("http://localhost:5678/api/works/", {
     method: "POST",
     headers: {
       accept: "application/json",
       Authorization: "Bearer " + token,
     },
-    body: dataProject,
+    body: JSON.stringify(dataProject),
   });
   if (callForSend === 201) {
     console.log("ok");
@@ -250,12 +259,15 @@ const dataProject = Object.fromEntries(formData);
   }
 };
 
-sendProject();
+// sendProject();
 
-btnSubmit.addEventListener("submit", async (e) => {
+btnSubmit.addEventListener("click", async (e) => {
   e.preventDefault();
-  sendProject;
+  await sendProject();
 });
+
+
+
 
 //-------déconnexion---------//
 
