@@ -55,13 +55,13 @@
 			<i class="fa-solid fa-arrow-left arrowReturn"></i>
 			<i class="fa-solid fa-xmark close"></i>
 
-			<form id="dataForm" enctype="multipart/form-data" action='#' method="post" name="fileform">
+			<form id="dataForm" enctype="multipart/form-data" action='#' method="post">
 
 				<div class="ajouterPhoto">
 					<i class="fa-regular fa-image fa-5x"></i>
-					<label id="btnAddPicture">+ Ajouter photo
-						<input type="file" name="file" id="filePicture" multiple accept="images/*" required />
-					</label>
+					<label id="btnAddPicture" for="filePicture">+ Ajouter photo</label>
+					<input type="file" name="image" id="filePicture" multiple accept="images/*" required />
+					
 					<p>jpg, png : 4mo max</p>
 				</div>
 
@@ -77,12 +77,12 @@
 				</select>
 				<img id="previewPicture" alt="preview"></img>
 			
-			<div class="border-bottom"></div>
+				<div class="border-bottom"></div>
 
 
 
-			<input type="submit" value="Valider" id="btnSubmit">
-</form>
+				<input type="submit" value="Valider" id="btnSubmit">
+			</form>
 
 
 		</aside>

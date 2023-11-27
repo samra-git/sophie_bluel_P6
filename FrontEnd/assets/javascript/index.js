@@ -199,19 +199,19 @@ const formChange = (e) => {
   e.preventDefault();
 
   const formData = new FormData(form);
-  const file = formData.get("file");
+  const image = formData.get("image");
   const title = formData.get("title");
   const category = formData.get("category");
-  const project = { file, title, category };
+  const project = { image, title, category };
 
-  console.log(project);
+  // console.log(project);
 
-  if ((file, title, category)) {
+  if ((image, title, category)) {
     btnSubmit.style.background = "#1D6154";
   }
 
-  if (file) {
-    previewPicture.src = URL.createObjectURL(file);
+  if (image) {
+    previewPicture.src = URL.createObjectURL(image);
     if (previewPicture) {
       previewPicture.style.visibility = "visible";
       btnAddPicture.style.visibility = "hidden";
@@ -238,7 +238,6 @@ dataForm.addEventListener(
 const sendProject = async () => {
 const formData = new FormData(form);
 const dataProject = Object.fromEntries(formData);
-console.log("dataProject");
 console.log(dataProject);
 
   const token = sessionStorage.getItem("Token");
@@ -247,12 +246,12 @@ console.log(token);
   const callForSend = await fetch("http://localhost:5678/api/works/", {
     method: "POST",
     headers: {
-      accept: "application/json",
+      // accept: "application/json",
       Authorization: "Bearer " + token,
     },
-    body: JSON.stringify(dataProject),
+    body: dataProject,
   });
-  if (callForSend === 201) {
+  if (callForSend.status === 201) {
     console.log("ok");
   } else {
     console.error("not ok");
