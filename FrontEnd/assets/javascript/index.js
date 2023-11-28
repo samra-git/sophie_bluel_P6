@@ -14,7 +14,7 @@ const galleryModal = document.querySelector(".galleryModal");
 const close = document.querySelectorAll(".close");
 const modifyWork = document.querySelector(".modifyWork");
 const arrowReturn = document.querySelector(".arrowReturn");
-const btnSubmit = document.getElementById("btnSubmit")
+const btnSubmit = document.getElementById("btnSubmit");
 
 let arrayWorks = [];
 let arrayCategories = [];
@@ -88,19 +88,29 @@ filterDom.forEach((filtre, index) => {
 
 const dataToken = sessionStorage.getItem("isConnected", true);
 console.log(dataToken);
+const shadow = document.querySelector(".shadow")
+console.log(shadow);
 
 // --modification de la page d'accueil après connexion--//
+
 
 if (dataToken) {
   // console.log(login);
   logout.style.display = "block";
+  logout.style.color = "black"
   login.style.display = "none";
   modeEdition.style.visibility = "visible";
   modify.style.visibility = "visible";
   filterHidden.style.display = "none";
 
+// document.body.addEventListener("click", )
+
   modifyProject.addEventListener("click", () => {
     modale.style.display = "block";
+    shadow.style.display = "block";
+    
+    
+
 
     //----fonction pour générer la gallerie dans la modale------//
 
@@ -128,8 +138,12 @@ if (dataToken) {
       element.addEventListener("click", () => {
         modale.style.display = "none";
         modifyWork.style.display = "none";
+        shadow.style.display = "none";
+        
+
       });
     });
+
 
 //--bouton qui permet d'accéder à la modale pour ajouter un projet--//
     btnAdd.addEventListener("click", () => {
@@ -179,10 +193,7 @@ if (dataToken) {
 
               if (workToDelete) {
                 workToDelete.remove();
-                location.reload()
                 modale.style.display = "block"
-          
-                // modalWorks(arrayWorks)
               }
             }
           })
@@ -192,7 +203,10 @@ if (dataToken) {
       }
     };
   });
+  
+    
 }
+
 
 
 //----------fonction pour ajouter un projet-----------//
@@ -272,11 +286,9 @@ console.log(formData);
 
   
   }
-}).then((refresh) => {
-  if (refresh) {
-    modalWorks(arrayWorks)
-  }
-})//ne marche pas
+}).catch((error) => {
+  alert("Erreur:", error);
+});
 };
 
 // sendProject();
