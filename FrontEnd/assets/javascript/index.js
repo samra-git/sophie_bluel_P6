@@ -119,6 +119,8 @@ if (dataToken) {
       galleryModal.classList.add("galleryModal");
 
       // console.log(galleryModal);
+
+      // deleteProjectById()
     };
     modalWorks(arrayWorks);
 
@@ -138,6 +140,13 @@ if (dataToken) {
     arrowReturn.addEventListener("click", () => {
       modale.style.display = "block";
       modifyWork.style.display = "none";
+      form.reset()
+      previewPicture.src ="";
+      previewPicture.style.visibility = "hidden";
+      btnAddPicture.style.visibility = "visible";
+      document.querySelector(".ajouterPhoto p").style.visibility = "visible";
+      
+
     });
     const trash = document.querySelectorAll("#minPicture i");
     trash.forEach((e) => {
@@ -170,6 +179,8 @@ if (dataToken) {
 
               if (workToDelete) {
                 workToDelete.remove();
+                location.reload()
+                modale.style.display = "block"
           
                 // modalWorks(arrayWorks)
               }
@@ -254,17 +265,18 @@ console.log(formData);
     form.reset()
     previewPicture.src ="";
 
-  modifyWork.style.display = "none"
-   modale.style.display = "block"
+  // modifyWork.style.display = "none"
+  //  modale.style.display = "block"
+   
+   location.reload()
 
-  // galleryModal.innerHTML = ""
-  //  modalWorks(arrayWorks);
-  //  galleryDom.innerHTML = ""
-  //  showWorks(arrayWorks)
-  } else {
-    console.error("not ok");
+  
   }
-})
+}).then((refresh) => {
+  if (refresh) {
+    modalWorks(arrayWorks)
+  }
+})//ne marche pas
 };
 
 // sendProject();
@@ -272,6 +284,8 @@ console.log(formData);
 btnSubmit.addEventListener("click", async (e) => {
   e.preventDefault();
   await sendProject();
+  // if (location.reload()) {
+  // modalWorks(arrayWorks)}// ne fonctionnne pas
 });
 
 
@@ -279,13 +293,12 @@ btnSubmit.addEventListener("click", async (e) => {
 
 //-------déconnexion---------//
 
-const deconnect = () => {
+const deconnect = (e) => {
+  e.preventDefault()
   sessionStorage.clear();
   document.location.href = "./index.html";
 };
-logout.addEventListener("click", () => {
-  deconnect();
-});
+logout.addEventListener("click", deconnect);
 
 
 
