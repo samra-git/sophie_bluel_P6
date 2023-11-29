@@ -53,8 +53,8 @@ const showWorks = (arrayOfWorks) => {
   });
   galleryDom.innerHTML = worksHtml;
 };
-await recupWorks();
 
+await recupWorks();
 showWorks(arrayWorks);
 // console.log(arrayWorks);
 
@@ -65,6 +65,8 @@ const showCategories = (arrayOfCategories) => {
   });
   categoriesHtml = "<span class='filter'>Tous</span>" + categoriesHtml;
   filterListDom.innerHTML = categoriesHtml;
+
+  
 };
 showCategories(arrayCategories);
 
@@ -118,11 +120,11 @@ if (dataToken) {
       let worksHtml = "";
       arrayOfWorks.map((work) => {
         worksHtml += `
-    <div data-work-id="${work.id}"  id="minPicture">
-    <figure>
+    
+    <figure data-work-id="${work.id}"  id="minPicture">
     <img src="${work.imageUrl}" alt="${work.title}"><i class="fa-solid fa-trash-can #trash"></i>
     </figure>
-    </div>
+    
     `;
       });
       galleryModal.innerHTML = worksHtml;
@@ -134,14 +136,23 @@ if (dataToken) {
     };
     modalWorks(arrayWorks);
 
+
+    //**croix qui permet de fermer la modale */
     close.forEach((element) => {
       element.addEventListener("click", () => {
         modale.style.display = "none";
         modifyWork.style.display = "none";
         shadow.style.display = "none";
-        
-
       });
+
+      shadow.addEventListener("click", () => {
+        modale.style.display = "none";
+        shadow.style.display = "none";
+
+
+      })
+
+
     });
 
 
@@ -150,7 +161,7 @@ if (dataToken) {
       modale.style.display = "none";
       modifyWork.style.display = "block";
     });
-//--flèche de retour à la modale supprimer projet--//
+  //--flèche de retour à la modale supprimer projet--//
     arrowReturn.addEventListener("click", () => {
       modale.style.display = "block";
       modifyWork.style.display = "none";
@@ -162,17 +173,20 @@ if (dataToken) {
       
 
     });
+
+  //------fonction pour supprimer un projet----//
+
     const trash = document.querySelectorAll("#minPicture i");
     trash.forEach((e) => {
       e.addEventListener("click", (e) => {
         const workId = e.target.closest("#minPicture").dataset.workId;
         deleteProjectById(workId);
+              
       });
     });
 
-    //------fonction pour supprimer un projet----//
-
-    const deleteProjectById = (workId) => {
+    
+    const deleteProjectById = async (workId) => {
       const token = sessionStorage.getItem("Token");
       const userConfirmed = confirm("Etes-vous sûr de vouloir supprimer?");
       console.log(userConfirmed);
@@ -188,13 +202,22 @@ if (dataToken) {
             if (!res.ok) {
               console.error("Erreur lors de la suppression du projet");
             } else {
-              recupWorks();
-              const workToDelete = document.querySelector("#minPicture");
 
-              if (workToDelete) {
-                workToDelete.remove();
-                modale.style.display = "block"
-              }
+              console.log("Projet supprimé avec succèes");
+               const workToDelete = document.querySelector(`figure[data-work-id="${workId}"]`);
+              //  console.log(workToDelete);
+               if (workToDelete) {
+               workToDelete.remove();
+              //  galleryDom.innerHTML = ""
+               recupWorks()
+               showWorks(arrayWorks)
+              //  console.log();
+
+
+              //   location.reload();
+               }
+              
+          
             }
           })
           .catch((error) => {
@@ -215,12 +238,9 @@ const form = document.querySelector("#dataForm");
 const titre = document.getElementById("title").value;
 const filePicture = document.getElementById("filePicture");
 const previewPicture = document.querySelector("#previewPicture");
-// const formData = new FormData(form);
-// const dataProject = Object.fromEntries(formData);
 
 //***écouteur d'événement à l'ajout de la photo */
 
-// console.log(dataProject);
 
 const formChange = (e) => {
   e.preventDefault();
@@ -260,8 +280,6 @@ dataForm.addEventListener("change",  formChange);
 
 const sendProject = async () => {
 const formData = new FormData(form);
-// const dataProject = Object.fromEntries(formData);
-// dataProject.category = parseInt(dataProject.category, 10);
 console.log(formData);
 
   const token = sessionStorage.getItem("Token");
@@ -278,26 +296,18 @@ console.log(formData);
      if (res.ok) {
     form.reset()
     previewPicture.src ="";
-
-  // modifyWork.style.display = "none"
-  //  modale.style.display = "block"
-   
-   location.reload()
-
-  
+    filePicture.style.visibility = "hidden"
+    location.reload();
   }
 }).catch((error) => {
   alert("Erreur:", error);
 });
 };
 
-// sendProject();
-
 btnSubmit.addEventListener("click", async (e) => {
   e.preventDefault();
   await sendProject();
-  // if (location.reload()) {
-  // modalWorks(arrayWorks)}// ne fonctionnne pas
+  
 });
 
 

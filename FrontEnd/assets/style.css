@@ -69,6 +69,10 @@ a {
 	display: none;
 
 } 
+.divCloseModal {
+	width: 100vw;
+	height: 100vh;
+}
 
 /****modale*******/
 .galleryModal img{
@@ -88,10 +92,10 @@ a {
 	padding-top: 50px;
 	font-family: "Work Wans";
 }
-#minPicture figure{
+#minPicture{
 	position: relative;
 }
-#minPicture i{
+#minPicture  i{
 	position: absolute;
 	top:5px;
 	right:5px;
