@@ -147,6 +147,7 @@ if (dataToken) {
 
       shadow.addEventListener("click", () => {
         modale.style.display = "none";
+        modifyWork.style.display = "none";
         shadow.style.display = "none";
 
 
@@ -223,7 +224,6 @@ if (dataToken) {
 }
 
 const newDataGallery = async() =>{
-
   const newWork = await fetch("http://localhost:5678/api/works");
 
   const works = await newWork.json();
@@ -296,10 +296,13 @@ console.log(formData);
     body: formData,
   }).then((res) =>  {
      if (res.ok) {
-    form.reset()
-    previewPicture.src ="";
-    filePicture.style.visibility = "hidden"
-    location.reload();
+    // form.reset()
+    // previewPicture.src ="";
+    // filePicture.style.visibility = "hidden"
+    // location.reload();
+    resetForm()
+    newDataGallery()
+
   }
 }).catch((error) => {
   alert("Erreur:", error);
@@ -309,9 +312,19 @@ console.log(formData);
 btnSubmit.addEventListener("click", async (e) => {
   e.preventDefault();
   await sendProject();
+
   
 });
 
+const resetForm = () => {
+    form.reset()
+    previewPicture.src ="";
+    filePicture.style.visibility = "hidden"
+    previewPicture.style.visibility = "hidden";
+    btnAddPicture.style.visibility = "visible";
+    document.querySelector(".ajouterPhoto p").style.visibility = "visible";
+    btnSubmit.style.background = "#A7A7A7"
+}
 
 
 
