@@ -181,7 +181,10 @@ if (dataToken) {
       e.addEventListener("click", (e) => {
         const workId = e.target.closest("#minPicture").dataset.workId;
         deleteProjectById(workId);
-              
+        // newFetch()
+        // recupWorks()
+        // showWorks(arrayWorks)
+        
       });
     });
 
@@ -202,22 +205,12 @@ if (dataToken) {
             if (!res.ok) {
               console.error("Erreur lors de la suppression du projet");
             } else {
-
-              console.log("Projet supprimé avec succèes");
+              newDataGallery()
                const workToDelete = document.querySelector(`figure[data-work-id="${workId}"]`);
-              //  console.log(workToDelete);
                if (workToDelete) {
-               workToDelete.remove();
-              //  galleryDom.innerHTML = ""
-               recupWorks()
-               showWorks(arrayWorks)
-              //  console.log();
-
-
-              //   location.reload();
+               workToDelete.remove();         
                }
               
-          
             }
           })
           .catch((error) => {
@@ -226,11 +219,20 @@ if (dataToken) {
       }
     };
   });
-  
     
 }
 
+const newDataGallery = async() =>{
 
+  const newWork = await fetch("http://localhost:5678/api/works");
+
+  const works = await newWork.json();
+  console.log(works);
+  if (works) {
+    showWorks(works)
+  }
+  
+};
 
 //----------fonction pour ajouter un projet-----------//
 const btnAddPicture = document.getElementById("btnAddPicture");
