@@ -130,9 +130,7 @@ if (dataToken) {
       galleryModal.innerHTML = worksHtml;
       galleryModal.classList.add("galleryModal");
 
-      // console.log(galleryModal);
-
-      // deleteProjectById()
+      
     };
     modalWorks(arrayWorks);
 
@@ -167,10 +165,10 @@ if (dataToken) {
       modale.style.display = "block";
       modifyWork.style.display = "none";
       form.reset()
-      previewPicture.src ="";
-      previewPicture.style.visibility = "hidden";
-      btnAddPicture.style.visibility = "visible";
-      document.querySelector(".ajouterPhoto p").style.visibility = "visible";
+      // previewPicture.src ="";
+      // previewPicture.style.visibility = "hidden";
+      // btnAddPicture.style.visibility = "visible";
+      // document.querySelector(".ajouterPhoto p").style.visibility = "visible";
       
 
     });
@@ -182,9 +180,7 @@ if (dataToken) {
       e.addEventListener("click", (e) => {
         const workId = e.target.closest("#minPicture").dataset.workId;
         deleteProjectById(workId);
-        // newFetch()
-        // recupWorks()
-        // showWorks(arrayWorks)
+        
         
       });
     });
@@ -215,7 +211,7 @@ if (dataToken) {
             }
           })
           .catch((error) => {
-            console.error("Erreur:", error);
+            console.error("Erreur:" + error);
           });
       }
     };
@@ -229,7 +225,9 @@ const newDataGallery = async() =>{
   const works = await newWork.json();
   console.log(works);
   if (works) {
-    showWorks(works)
+    showWorks(works);
+    // modalWorks(works);
+    
   }
   
 };
@@ -296,16 +294,16 @@ console.log(formData);
     body: formData,
   }).then((res) =>  {
      if (res.ok) {
-    // form.reset()
-    // previewPicture.src ="";
-    // filePicture.style.visibility = "hidden"
-    // location.reload();
-    resetForm()
-    newDataGallery()
+    location.reload();
+    // resetForm()
+    // modale.style.display = "block"
+    // modifyProject.style.display = "none"
+    // newDataGallery()
+    // modalWorks(works)
 
   }
 }).catch((error) => {
-  alert("Erreur:", error);
+  alert("Erreur: un problème est survenu lors de l'ajout du projet");
 });
 };
 
