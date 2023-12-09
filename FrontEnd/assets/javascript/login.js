@@ -13,13 +13,16 @@ const connect = () => {
   })
     .then((response) => response.json())
     .then((data) => {
-      sessionStorage.setItem("Token", data.token);
+      localStorage.setItem("Token", data.token);
 
 
       if (data.message || data.error) {
         alert("Erreur dans l’identifiant ou le mot de passe");
+        document.location.href = "./login.html"
+        form.reset()
       } else {
-        sessionStorage.setItem("isConnected", JSON.stringify(true));
+        // localStorageStorage.setItem("isConnected", JSON.stringify(true));
+        // sessionStorage.setItem("isConnected", JSON.stringify(true));
         document.location.href = "./index.html";
       }
     });

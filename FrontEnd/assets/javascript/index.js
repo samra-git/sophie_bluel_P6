@@ -1,4 +1,4 @@
-// import {connect} from "./login.js"
+import {callCategory, callWorks} from "./api.js"
 
 //----------------VARIABLES----------------------//
 const galleryDom = document.querySelector("#portfolio .gallery");
@@ -7,7 +7,6 @@ const logout = document.querySelector("nav li:nth-child(4)");
 const login = document.querySelector("nav li:nth-child(3)");
 const modeEdition = document.querySelector(".blackspace");
 const modify = document.querySelector(".modifier");
-const filterHidden = document.querySelector(".filters");
 const modifyProject = document.querySelector(".modifier i");
 const modale = document.querySelector(".modale");
 const galleryModal = document.querySelector(".galleryModal");
@@ -16,27 +15,35 @@ const modifyWork = document.querySelector(".modifyWork");
 const arrowReturn = document.querySelector(".arrowReturn");
 const btnSubmit = document.getElementById("btnSubmit");
 
+
 let arrayWorks = [];
 let arrayCategories = [];
 
 //---------RECUPERATION DES DONNEES------------------//
 const elementCategories = async () => {
-  const recupCategories = await fetch("http://localhost:5678/api/categories");
-  const categories = await recupCategories.json();
-
-  arrayCategories = categories;
+  try {
+    const categories = await callCategory();
+    arrayCategories = categories;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des catégories", error)
+  }
   // console.log(categories);
 };
 elementCategories();
 
 const recupWorks = async () => {
-  const reponseWork = await fetch("http://localhost:5678/api/works");
+  try {
+    const works = await callWorks();
+      // console.log(works);
+      arrayWorks = works;
 
-  const works = await reponseWork.json();
-  // console.log(works);
-  arrayWorks = works;
+  } catch (error) {
+  console.error("Erreur lors de la récupération des travaux", error)
+}
+
   // console.log(arrayWorks);
-};
+} 
+recupWorks()
 
 //------générations des données dynamiquement----------------//
 
@@ -58,6 +65,7 @@ await recupWorks();
 showWorks(arrayWorks);
 // console.log(arrayWorks);
 
+
 const showCategories = (arrayOfCategories) => {
   let categoriesHtml = "";
   arrayOfCategories.map((cat) => {
@@ -66,36 +74,57 @@ const showCategories = (arrayOfCategories) => {
   categoriesHtml = "<span class='filter'>Tous</span>" + categoriesHtml;
   filterListDom.innerHTML = categoriesHtml;
 
-  
 };
-showCategories(arrayCategories);
 
+showCategories(arrayCategories);
+// console.log(arrayWorks);
 //fonction filtres//
 const filterDom = document.querySelectorAll(".filter");
+const tous = document.querySelector("#portfolio span:nth-child(1)")
+console.log(tous)
+// console.log(filterDom);
 filterDom.forEach((filtre, index) => {
   filtre.addEventListener("click", () => {
+    filterDom.forEach((f) => f.classList.remove("active"));
+    filtre.classList.add("active");
+
+
+
     const filtersWorks = arrayWorks.filter((cat) => {
       return cat.categoryId == index;
     });
     if (index == 0) {
       showWorks(arrayWorks);
+
+
     } else {
       showWorks(filtersWorks);
+      tous.style.color = "#1D6154";
+      tous.style.background = "#FFFEf8";
+      tous.addEventListener('click', () => {
+      tous.style.color = "#FFFEf8";
+      tous.style.background = "#1D6154";
+      })
+
+      
+      
     }
   });
 });
 
 
+
+
+
 //------------------------------------MODALE--------------------------//
 
-const dataToken = sessionStorage.getItem("isConnected", true);
+const dataToken = localStorage.getItem("Token");
 console.log(dataToken);
+localStorage.setItem("Token", dataToken)
 const shadow = document.querySelector(".shadow")
-console.log(shadow);
+// console.log(shadow);
 
-// --modification de la page d'accueil après connexion--//
-
-
+  // --modification de la page d'accueil après connexion--//
 if (dataToken) {
   // console.log(login);
   logout.style.display = "block";
@@ -103,24 +132,18 @@ if (dataToken) {
   login.style.display = "none";
   modeEdition.style.visibility = "visible";
   modify.style.visibility = "visible";
-  filterHidden.style.display = "none";
-
-// document.body.addEventListener("click", )
-
+  filterListDom.style.display = "none";
+}
+  //--événement permettant d'ouvrir la modale--//
   modifyProject.addEventListener("click", () => {
     modale.style.display = "block";
-    shadow.style.display = "block";
-    
-    
-
-
-    //----fonction pour générer la gallerie dans la modale------//
-
+    shadow.style.display = "block"; 
+  })
+  //--fonction pour générer la galerie dans la modale--//
     const modalWorks = (arrayOfWorks) => {
       let worksHtml = "";
       arrayOfWorks.map((work) => {
         worksHtml += `
-    
     <figure data-work-id="${work.id}"  id="minPicture">
     <img src="${work.imageUrl}" alt="${work.title}"><i class="fa-solid fa-trash-can #trash"></i>
     </figure>
@@ -142,63 +165,54 @@ if (dataToken) {
         modifyWork.style.display = "none";
         shadow.style.display = "none";
       });
-
+      //**le click sur le fond sombre pour fermer la modale */
       shadow.addEventListener("click", () => {
         modale.style.display = "none";
         modifyWork.style.display = "none";
         shadow.style.display = "none";
-
-
       })
-
-
     });
 
 
-//--bouton qui permet d'accéder à la modale pour ajouter un projet--//
+    //--bouton qui permet d'accéder à la modale pour ajouter un projet--//
     btnAdd.addEventListener("click", () => {
       modale.style.display = "none";
       modifyWork.style.display = "block";
     });
-  //--flèche de retour à la modale supprimer projet--//
+
+    //--flèche de retour à la modale supprimer projet--//
     arrowReturn.addEventListener("click", () => {
       modale.style.display = "block";
       modifyWork.style.display = "none";
-      form.reset()
-      // previewPicture.src ="";
-      // previewPicture.style.visibility = "hidden";
-      // btnAddPicture.style.visibility = "visible";
-      // document.querySelector(".ajouterPhoto p").style.visibility = "visible";
-      
-
+      resetForm()     
     });
 
-  //------fonction pour supprimer un projet----//
-
+    //------événement et fonction pour supprimer un projet----//
     const trash = document.querySelectorAll("#minPicture i");
     trash.forEach((e) => {
       e.addEventListener("click", (e) => {
         const workId = e.target.closest("#minPicture").dataset.workId;
         deleteProjectById(workId);
-        
-        
       });
     });
 
-    
+
+    // const token = localStorage.getItem("Token");
+     
     const deleteProjectById = async (workId) => {
-      const token = sessionStorage.getItem("Token");
+      try {
+      const token = localStorage.getItem("Token")
       const userConfirmed = confirm("Etes-vous sûr de vouloir supprimer?");
       console.log(userConfirmed);
 
       if (userConfirmed) {
-        fetch("http://localhost:5678/api/works/" + workId, {
+       const res = await fetch("http://localhost:5678/api/works/" + workId, {
           method: "DELETE",
           headers: {
             Authorization: "Bearer " + token,
           },
         })
-          .then((res) => {
+          
             if (!res.ok) {
               console.error("Erreur lors de la suppression du projet");
             } else {
@@ -209,38 +223,34 @@ if (dataToken) {
                }
               
             }
-          })
-          .catch((error) => {
+          }
+        } catch (error) {
             console.error("Erreur:" + error);
-          });
+          };
       }
-    };
-  });
     
-}
 
+  
+    
+
+//-----------fonction pour actualiser la modale---------//
 const newDataGallery = async() =>{
   const newWork = await fetch("http://localhost:5678/api/works");
 
   const works = await newWork.json();
   console.log(works);
   if (works) {
-    showWorks(works);
-    // modalWorks(works);
-    
+    showWorks(works);   
   }
-  
 };
 
-//----------fonction pour ajouter un projet-----------//
+
+//----------fonction pour modifier l'apparence du formulaire une fois rempli-----------//
 const btnAddPicture = document.getElementById("btnAddPicture");
 const form = document.querySelector("#dataForm");
-const titre = document.getElementById("title").value;
+// const titre = document.getElementById("title").value;
 const filePicture = document.getElementById("filePicture");
 const previewPicture = document.querySelector("#previewPicture");
-
-//***écouteur d'événement à l'ajout de la photo */
-
 
 const formChange = (e) => {
   e.preventDefault();
@@ -249,12 +259,13 @@ const formChange = (e) => {
   const image = formData.get("image");
   const title = formData.get("title");
   const category = formData.get("category");
-  const project = { image, title, category };
+  // const project = { image, title, category };
 
   // console.log(project);
 
-  if ((image, title, category)) {
+  if ((image && title && category)) {
     btnSubmit.style.background = "#1D6154";
+    btnSubmit.style.cursor = "pointer"
   }
 
   if (image) {
@@ -277,13 +288,13 @@ const formChange = (e) => {
 
 dataForm.addEventListener("change",  formChange);
 
-
+//---------------------------fonction pour envoyer un nouveau projet-------------------------------//
 const sendProject = async () => {
 const formData = new FormData(form);
 console.log(formData);
 
-  const token = sessionStorage.getItem("Token");
-  const dataToken = sessionStorage.getItem("isConnected", true);
+  const token = localStorage.getItem("Token");
+  // const dataToken = sessionStorage.getItem("isConnected", true);
 // console.log(token);
   const callForSend = await fetch("http://localhost:5678/api/works", {
     method: "POST",
@@ -292,20 +303,25 @@ console.log(formData);
       Authorization: "Bearer " + token,
     },
     body: formData,
-  }).then((res) =>  {
-     if (res.ok) {
-    location.reload();
-    // resetForm()
-    // modale.style.display = "block"
-    // modifyProject.style.display = "none"
-    // newDataGallery()
-    // modalWorks(works)
+  })
 
+  try {
+    const res = await callForSend;
+    if (res.ok) {
+      location.reload();
+      newDataGallery();
+    } else if (res.status === 400) {
+      const data = await res.json();
+      alert("Un problème est survenu lors de l'ajout du projet");
+      resetForm();
+    } else {
+      
+      alert("Erreur : un problème est survenu lors de l'ajout du projet");
+    }
+  } catch (error) {
+    alert("Erreur : un problème est survenu lors de l'ajout du projet");
   }
-}).catch((error) => {
-  alert("Erreur: un problème est survenu lors de l'ajout du projet");
-});
-};
+}
 
 btnSubmit.addEventListener("click", async (e) => {
   e.preventDefault();
@@ -314,6 +330,7 @@ btnSubmit.addEventListener("click", async (e) => {
   
 });
 
+//-------------fonction pour vider le formulaire----------//
 const resetForm = () => {
     form.reset()
     previewPicture.src ="";
@@ -321,7 +338,9 @@ const resetForm = () => {
     previewPicture.style.visibility = "hidden";
     btnAddPicture.style.visibility = "visible";
     document.querySelector(".ajouterPhoto p").style.visibility = "visible";
-    btnSubmit.style.background = "#A7A7A7"
+    btnSubmit.style.background = "#A7A7A7";
+    btnSubmit.style.cursor = "not-allowed"
+
 }
 
 
@@ -331,12 +350,19 @@ const resetForm = () => {
 const deconnect = (e) => {
   e.preventDefault()
   sessionStorage.clear();
+  localStorage.clear();
   document.location.href = "./index.html";
+  logout.style.display = "none";
+  logout.style.color = "black"
+  login.style.display = "block";
+  modeEdition.style.visibility = "hidden";
+  modify.style.visibility = "hidden";
+  filterListDom.style.display = "block";
 };
 logout.addEventListener("click", deconnect);
 
 
-
+  
 
 
 
@@ -357,4 +383,4 @@ logout.addEventListener("click", deconnect);
 
 // //   const formData = new FormData(form)
 // // console.log(formData);
-// })
+// }
