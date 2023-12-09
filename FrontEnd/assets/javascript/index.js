@@ -81,7 +81,7 @@ showCategories(arrayCategories);
 //fonction filtres//
 const filterDom = document.querySelectorAll(".filter");
 const tous = document.querySelector("#portfolio span:nth-child(1)")
-console.log(tous)
+// console.log(tous)
 // console.log(filterDom);
 filterDom.forEach((filtre, index) => {
   filtre.addEventListener("click", () => {
@@ -119,8 +119,7 @@ filterDom.forEach((filtre, index) => {
 //------------------------------------MODALE--------------------------//
 
 const dataToken = localStorage.getItem("Token");
-console.log(dataToken);
-localStorage.setItem("Token", dataToken)
+
 const shadow = document.querySelector(".shadow")
 // console.log(shadow);
 
@@ -339,7 +338,7 @@ const resetForm = () => {
     btnAddPicture.style.visibility = "visible";
     document.querySelector(".ajouterPhoto p").style.visibility = "visible";
     btnSubmit.style.background = "#A7A7A7";
-    btnSubmit.style.cursor = "not-allowed"
+    btnSubmit.style.cursor = "not-allowed";
 
 }
 

@@ -21,7 +21,7 @@ const connect = () => {
         document.location.href = "./login.html"
         form.reset()
       } else {
-        // localStorageStorage.setItem("isConnected", JSON.stringify(true));
+        localStorage.setItem("Token", data.token);
         // sessionStorage.setItem("isConnected", JSON.stringify(true));
         document.location.href = "./index.html";
       }
